@@ -1,0 +1,85 @@
+/* HomePage.css */
+
+.home-page {
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+.hero-section {
+  background-color: #f8f9fa;
+  padding: 100px 0;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+.join-text {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.mission-section {
+  background-color: #fff;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.mission-text {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.stats-section {
+  background-color: #e9ecef;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.stat-label {
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+.cta-section {
+  background-color: #f8f9fa;
+}
+
+.cta-button {
+  font-weight: bold;
+  padding: 15px 30px;
+  font-size: 1.5rem;
+}
+
+.website-link a {
+  color: #3498db;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+.website-link a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-section {
+    padding: 60px 0;
+  }
+}
