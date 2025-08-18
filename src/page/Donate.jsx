@@ -1,48 +1,47 @@
-import React from 'react';
-import { Container, Row, Col, Button, ProgressBar } from 'react-bootstrap';
+import React from "react";
+import "../css/Donation.css";
+import { makeGift } from "../components/donation";
+
 
 const Donate = () => {
   return (
-    <Container className="py-5">
-      <Row className="justify-content-center">
-        <Col lg={8}>
-          <h1 className="text-center mb-4">Support Our Movement</h1>
-          <p className="text-center lead mb-5">
-            Your donation helps empower youth leaders and fund critical initiatives for social and environmental justice.
-          </p>
-          
-          <div className="mb-5 p-4 border rounded shadow-sm">
-            <h3 className="mb-4">Current Fundraising Goal</h3>
-            <ProgressBar now={65} label={`65%`} className="mb-3" style={{ height: '30px' }} />
-            <p className="text-muted">$32,500 raised of $50,000 goal</p>
-          </div>
-          
-          <Row className="g-4 mb-5">
-            <Col md={4}>
-              <Button variant="primary" size="lg" className="w-100 py-3">
-                $25
-              </Button>
-            </Col>
-            <Col md={4}>
-              <Button variant="primary" size="lg" className="w-100 py-3">
-                $50
-              </Button>
-            </Col>
-            <Col md={4}>
-              <Button variant="primary" size="lg" className="w-100 py-3">
-                $100
-              </Button>
-            </Col>
-          </Row>
-          
-          <div className="text-center">
-            <Button variant="outline-primary" size="lg" className="px-5">
-              Custom Amount
-            </Button>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+    <div className="donation-page">
+      {/* Banner */}
+      <section className="banner">
+        <h2><em>Support WTY</em></h2>
+        <h3>Donate</h3>
+        <p>support our program</p>
+      </section>
+
+      {/* Donation Section */}
+      <div className="donation-container">
+        <img 
+          src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
+          alt="Donation Icon" 
+        />
+        <p><strong>Donate by Bkash</strong></p>
+        <button className="donate-btn" onClick={makeGift}>
+          Make a Gift
+        </button>
+      </div>
+
+      {/* Quote */}
+      <div className="quote">
+        “Be the light in someone’s darkest moment. Donate today & make an impact.”
+      </div>
+
+      {/* Footer */}
+      <footer>
+        <p>
+          <a href="https://www.wetheyouth.com" target="_blank" rel="noreferrer">
+            www.wetheyouth.com
+          </a>
+        </p>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" width="30" alt="instagram" /></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384023.png" width="30" alt="whatsapp" /></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384005.png" width="30" alt="facebook" /></a>
+      </footer>
+    </div>
   );
 };
 
