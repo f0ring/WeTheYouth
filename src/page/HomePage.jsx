@@ -62,15 +62,7 @@ const HomePage = () => {
               <h1 className="hero-title">"EMPOWERING YOUTH. SPARKING CHANGE."</h1>
               <div className="hero-cta">
                 <p className="join-text">Join the movement</p>
-                <Button 
-                  as={Link} 
-                  to="/take-action" 
-                  variant="primary" 
-                  size="lg" 
-                  className="mt-3 pulse-btn"
-                >
-                  Learn more
-                </Button>
+                
               </div>
             </Col>
           </Row>

@@ -1,0 +1,117 @@
+/* About Page Styles */
+.about-page {
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  padding-top: 80px; /* Account for fixed navbar */
+}
+
+/* Hero Section */
+.about-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), url('https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center);
+  background-size: cover;
+  padding: 100px 0;
+  text-align: center;
+  color: white;
+}
+
+.about-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Stories Section */
+.stories-section {
+  background-color: #fff;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  font-weight: 700;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #e74c3c, #3498db);
+}
+
+.story-card {
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.story-card:hover {
+  transform: translateY(-5px);
+}
+
+.story-title {
+  font-size: 1.8rem;
+  color: #e74c3c;
+  margin-bottom: 15px;
+}
+
+.story-quote {
+  font-size: 1.3rem;
+  font-style: italic;
+  color: #3498db;
+  margin-bottom: 20px;
+}
+
+.story-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #4a5568;
+}
+
+/* Footer Link */
+.about-footer {
+  background-color: #f1f1f1;
+}
+
+.website-link {
+  color: #3498db;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.website-link:hover {
+  color: #e74c3c;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about-title {
+    font-size: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+  }
+  
+  .story-title {
+    font-size: 1.5rem;
+  }
+  
+  .story-quote {
+    font-size: 1.1rem;
+  }
+  
+  .story-content {
+    font-size: 1rem;
+  }
+}
