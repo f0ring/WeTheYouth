@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Story - We The Youth</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f9f9f9, #e0f7fa);
+      color: #333;
+    }
+
+    header {
+      background: #00796b;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .story {
+      line-height: 1.8;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    button {
+      display: inline-block;
+      padding: 12px 20px;
+      font-size: 1rem;
+      background: #00796b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #004d40;
+    }
+
+    .quote {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e0f2f1;
+      border-left: 5px solid #00796b;
+      border-radius: 8px;
+      display: none; /* hidden by default */
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Our Story: We The Youth</h1>
+  </header>
+
+  <div class="container">
+    <p class="story">
+      We are the youth, the voice of today and the architects of tomorrow.
+      Our story is not written in silence but in courage, dreams, and unity.
+      Together, we rise against challenges, ignite change, and shape a brighter future.
+    </p>
+
+    <button onclick="showQuote()">Reveal Our Message</button>
+
+    <div class="quote" id="quoteBox">
+      "The future belongs to those who believe in the power of their dreams."
+    </div>
+  </div>
+
+  <script>
+    function showQuote() {
+      const quoteBox = document.getElementById("quoteBox");
+      if (quoteBox.style.display === "none" || quoteBox.style.display === "") {
+        quoteBox.style.display = "block";
+      } else {
+        quoteBox.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
+<section id="about">
+  <h2>About Us</h2>
+  <p>We are the youth building the future!</p>
+</section>
