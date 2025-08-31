@@ -112,3 +112,17 @@ footer a {
   text-decoration: none;
   font-size: 22px;
 }
+/* Modal Styling */
+.modal-content {
+  border-radius: 12px;
+}
+
+.modal-title {
+  font-weight: bold;
+  color: #2d6a4f;
+}
+
+form label {
+  font-weight: bold;
+}
+

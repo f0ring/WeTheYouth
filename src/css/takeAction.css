@@ -1,0 +1,110 @@
+.take-action {
+  text-align: center;
+  padding: 20px;
+}
+
+/* ✅ Green bar for quote */
+.quote-bar {
+  background-color: #2e8b57; /* green bar */
+  padding: 80px;
+  margin-bottom: 20px;
+}
+
+.heading {
+  color: white;
+  font-size: 20px;
+  margin: 0;
+}
+
+/* ✅ Register Button */
+.register-btn {
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin: 15px 0;
+  border-radius: 5px;
+}
+
+.register-btn:hover {
+  background-color: darkgreen;
+}
+
+/* ✅ Form Styling */
+.form-container {
+  background: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  margin: 0 auto 20px;
+}
+
+.form-container input {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.submit-btn {
+  background-color: green;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.submit-btn:hover {
+  background-color: darkgreen;
+}
+
+/* ✅ Two-column layout */
+.content-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px auto;
+  max-width: 900px;
+  text-align: left;
+}
+
+.mission, .youth-activities {
+  width: 45%;
+}
+
+.mission h3, .youth-activities h3 {
+  color: green;
+  margin-bottom: 10px;
+}
+
+.youth-activities ul {
+  list-style: none;
+  padding: 0;
+}
+
+.youth-activities li {
+  margin: 6px 0;
+  font-size: 16px;
+}
+
+/* ✅ Info Section */
+.info {
+  margin: 20px auto;
+  max-width: 700px;
+  font-size: 16px;
+}
+
+/* ✅ Social Icons */
+.social-icons {
+  margin-top: 15px;
+}
+
+.social-icons img {
+  width: 30px;
+  margin: 0 8px;
+  cursor: pointer;
+}

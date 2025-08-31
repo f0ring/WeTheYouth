@@ -1,43 +1,85 @@
-import React from 'react';
-import { Container, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import "../css/takeAction.css";
 
 const TakeAction = () => {
-  const actions = [
-    {
-      title: "Join a Campaign",
-      description: "Participate in our ongoing initiatives",
-      link: "/campaigns"
-    },
-    {
-      title: "Start a Chapter",
-      description: "Bring We The Youth to your community",
-      link: "/start-chapter"
-    },
-    {
-      title: "Volunteer",
-      description: "Give your time and skills",
-      link: "/volunteer"
-    }
-  ];
+  const [showForm, setShowForm] = useState(false);
+
+  const handleRegisterClick = () => setShowForm(true);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Thank you for registering as a Volunteer!");
+    setShowForm(false);
+  };
 
   return (
-    <Container className="py-5">
-      <h1 className="text-center mb-5">Take Action</h1>
-      <Row className="g-4">
-        {actions.map((action, index) => (
-          <Col md={4} key={index}>
-            <div className="p-4 border rounded text-center h-100 hover-grow">
-              <h3>{action.title}</h3>
-              <p className="mb-3">{action.description}</p>
-              <Button as={Link} to={action.link} variant="outline-primary">
-                Learn More
-              </Button>
-            </div>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <div className="take-action">
+      {/* ✅ Fixed heading inside green bar */}
+      <div className="quote-bar">
+        <h2 className="heading">
+          “The best way to find yourself is to lose yourself in the service of others”
+        </h2>
+      </div>
+
+      {!showForm && (
+        <button className="register-btn" onClick={handleRegisterClick}>
+          Register as a Volunteer
+        </button>
+      )}
+
+      {showForm && (
+        <div className="form-container">
+          <h3>Volunteer Registration Form</h3>
+          <form onSubmit={handleSubmit}>
+            <input type="text" placeholder="Full Name" required />
+            <input type="email" placeholder="Email" required />
+            <input type="text" placeholder="Contact Number" required />
+            <input type="text" placeholder="Address" required />
+            <input type="text" placeholder="Interested Section" required />
+            <input type="number" placeholder="Age" required />
+            <input type="text" placeholder="Occupation" required />
+            <button type="submit" className="submit-btn">Submit</button>
+          </form>
+        </div>
+      )}
+
+      {/* ✅ Two-column section */}
+      <div className="content-row">
+        <div className="mission">
+          <h3>Together we rise</h3>
+          <p>✨ Be a voice of hope in time of crisis</p>
+          <p>💪 Use your strength to uplift those in need</p>
+          <p>❤️ Serve with passion, lead with compassion</p>
+        </div>
+
+        <div className="youth-activities">
+          <h3><b>Youth Friendly Campaigns</b></h3>
+          <ul>
+            <li>🌱 Tree planting campaigns</li>
+            <li>🧹 Street/Park cleaning drives</li>
+            <li>👵 Visiting elderly homes</li>
+            <li>🍱 Food distribution</li>
+            <li>📚 Clothes & book drives</li>
+            <li>🐶 Animal shelter help</li>
+            <li>🌍 Cultural exchange events</li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="info">
+        <p>
+          We have over <b>3000+ volunteers</b> across Bangladesh committed to help
+          during environmental challenges, mental health issues, and other emergencies.
+        </p>
+        <p><b>www.wetheyouth.com</b></p>
+      </div>
+
+      <div className="social-icons">
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" /></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" /></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" /></a>
+      </div>
+    </div>
   );
 };
 
