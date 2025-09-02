@@ -41,18 +41,26 @@ export const homeApi = {
 };
 
 // About Page APIs
+// Add to your aboutApi object
 export const aboutApi = {
-  getTeamMembers: async () => {
-    return apiRequest('/about/team');
-  },
-
   getStories: async () => {
     return apiRequest('/about/stories');
   },
 
-  getImpactStats: async () => {
-    return apiRequest('/about/impact');
+  getStory: async (id) => {
+    return apiRequest(`/about/stories/${id}`);
   },
+
+  createStory: async (storyData) => {
+    return apiRequest('/about/stories', {
+      method: 'POST',
+      body: JSON.stringify(storyData),
+    });
+  },
+
+  getStoriesByCategory: async (category) => {
+    return apiRequest(`/about/stories/category/${category}`);
+  }
 };
 
 // General APIs

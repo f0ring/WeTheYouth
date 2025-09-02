@@ -16,23 +16,8 @@ const About = () => {
         setStories(storiesData);
       } catch (err) {
         console.error('Failed to fetch stories:', err);
-        setError('Failed to load stories');
-        // Fallback to default stories
-        setStories([
-          {
-            title: "Youth for Earth",
-            quote: "This planet isn't a resource. It's a relationship.",
-            content: "Our Save the Planet campaign is led by passionate young environmentalists who are planting trees, banning plastic, and demanding their corporations and governments treat climate change as the crisis it is."
-          },
-          {
-            title: "Mind Matters – Breaking the Mental Health Stigma",
-            content: "We aim to create a culture where conversations about mental well-being are normal, open, and safe. Through school sessions, digital storytelling, and community support hubs, we're helping youth understand that it's okay to not be okay."
-          },
-          {
-            title: "Equal Rights Now – Not Later",
-            content: "In every corner of the world, young people are rising to demand fairness – for women, people of color, and marginalized groups. Our Equal Rights Now campaign is about ending systemic inequality and amplifying the voices that have been silenced for too long."
-          }
-        ]);
+        setError('Failed to load stories from database');
+        // You can keep fallback data here if needed
       } finally {
         setIsLoading(false);
       }
@@ -46,9 +31,9 @@ const About = () => {
       <div className="about-page">
         <Container className="text-center py-5">
           <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
+            <span className="visually-hidden">Loading stories...</span>
           </Spinner>
-          <p className="mt-3">Loading stories...</p>
+          <p className="mt-3">Loading stories from database...</p>
         </Container>
       </div>
     );
@@ -76,17 +61,22 @@ const About = () => {
               
               {error && (
                 <Alert variant="warning" className="mb-4">
-                  {error} - Showing demo content
+                  {error}
                 </Alert>
               )}
 
               {stories.map((story, index) => (
-                <div key={index} className="story-card mb-5">
+                <div key={story._id || index} className="story-card mb-5">
                   <h3 className="story-title">{story.title}</h3>
                   {story.quote && (
                     <p className="story-quote">"{story.quote}"</p>
                   )}
                   <p className="story-content">{story.content}</p>
+                  {story.category && (
+                    <span className="story-category badge bg-secondary">
+                      {story.category}
+                    </span>
+                  )}
                 </div>
               ))}
             </Col>

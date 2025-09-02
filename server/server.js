@@ -3,7 +3,8 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import homeRoutes from './routes/homeRoutes.js';
-
+// Add this import with your other imports
+import aboutRoutes from './routes/aboutRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -31,7 +32,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/home', homeRoutes);
-
+// Add this with your other route registrations
+app.use('/api/about', aboutRoutes);
 // Routes
 app.get('/api/db-status', async (req, res) => {
   try {
