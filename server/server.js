@@ -3,7 +3,6 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import homeRoutes from './routes/homeRoutes.js';
-// Add this import with your other imports
 import aboutRoutes from './routes/aboutRoutes.js';
 
 // Load environment variables
@@ -19,7 +18,7 @@ const connectDb = async () => {
     if (!process.env.MONGODB_URI) {
       throw new Error('MONGODB_URI is not defined');
     }
-    
+
     const conn = await mongoose.connect(process.env.MONGODB_URI);
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
@@ -31,13 +30,17 @@ const connectDb = async () => {
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use('/api/home', homeRoutes);
-// Add this with your other route registrations
-app.use('/api/about', aboutRoutes);
+
 // Routes
+app.use('/api/home', homeRoutes);
+app.use('/api/about', aboutRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the server 🚀");
+});
+
 app.get('/api/db-status', async (req, res) => {
   try {
-    // Check if MongoDB is connected
     const dbStatus = mongoose.connection.readyState;
     const statusMessages = {
       0: 'Disconnected',
@@ -45,7 +48,7 @@ app.get('/api/db-status', async (req, res) => {
       2: 'Connecting',
       3: 'Disconnecting'
     };
-    
+
     res.json({
       database: 'MongoDB',
       status: statusMessages[dbStatus] || 'Unknown',
@@ -57,7 +60,6 @@ app.get('/api/db-status', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Backend connected successfully!' });
@@ -74,15 +76,16 @@ app.get('/api/home/stats', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-// Start server first, then try to connect to DB
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
-  console.log('🔗 Test: http://localhost:5000/api/test');
+  console.log(`🔗 Test: http://localhost:${PORT}/api/test`);
 });
 
 // Try to connect to MongoDB
-connectDb().then(() => {
-  console.log('✅ MongoDB connection attempted');
-}).catch(error => {
-  console.log('⚠️  Server running without MongoDB');
-});
+connectDb()
+  .then(() => {
+    console.log('✅ MongoDB connection attempted');
+  })
+  .catch(error => {
+    console.log('⚠️  Server running without MongoDB');
+  });
