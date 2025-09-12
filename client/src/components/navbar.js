@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Button, Dropdown, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -8,8 +8,24 @@ import styles from '../css/navbar.module.css';
 const Navbarr = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [pulseAnimation, setPulseAnimation] = useState('0 0 0 0 rgba(231, 76, 60, 0.4)');
+  
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+
+  // Pulsing animation effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Pulse animation sequence
+      setPulseAnimation('0 0 0 0 rgba(231, 76, 60, 0.4)');
+      setTimeout(() => setPulseAnimation('0 0 0 8px rgba(231, 76, 60, 0.2)'), 350);
+      setTimeout(() => setPulseAnimation('0 0 0 12px rgba(231, 76, 60, 0)'), 700);
+      setTimeout(() => setPulseAnimation('0 0 0 0 rgba(231, 76, 60, 0)'), 1000);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -18,6 +34,31 @@ const Navbarr = () => {
     navigate('/');
     // Hide alert after 3 seconds
     setTimeout(() => setShowLogoutAlert(false), 3000);
+  };
+
+  // Get user initials
+  const getUserInitials = () => {
+    if (!currentUser) return '';
+    const { firstName, lastName } = currentUser;
+    return `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase();
+  };
+
+  // Inline styles to force the appearance
+  const avatarStyle = {
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    background: isHovered ? '#e74c3c' : 'white',
+    color: isHovered ? 'white' : '#e74c3c',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    border: '2px solid #e74c3c',
+    boxShadow: pulseAnimation,
+    fontSize: '16px'
   };
 
   return (
@@ -46,27 +87,32 @@ const Navbarr = () => {
             
             {currentUser ? (
               <Dropdown align="end" className="ms-2">
-                <Dropdown.Toggle variant="outline-primary" className="d-flex align-items-center p-0 border-0 bg-transparent">
-                  <div className="user-avatar">
-                    <i className="fas fa-user"></i>
+                <Dropdown.Toggle 
+                  variant="outline-primary" 
+                  className="d-flex align-items-center p-0 border-0 bg-transparent"
+                  style={{background: 'transparent !important', border: 'none !important'}}
+                >
+                  <div 
+                    className="user-avatar"
+                    style={avatarStyle}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    {getUserInitials()}
                   </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="profile-dropdown">
                   <Dropdown.Header className="text-center profile-header">
                     <div className="user-avatar-large mb-2">
-                      {currentUser.firstName.charAt(0)}{currentUser.lastName.charAt(0)}
+                      {getUserInitials()}
                     </div>
-                    <h6 className="mb-0">{currentUser.firstName} {currentUser.lastName}</h6>
-                    <small className="text-muted">{currentUser.email}</small>
+                    <h6 className="mb-0 profile-name">{currentUser.firstName} {currentUser.lastName}</h6>
+                    <small className="text-muted profile-email">{currentUser.email}</small>
                   </Dropdown.Header>
                   <Dropdown.Divider />
                   <Dropdown.Item as={Link} to="/profile" className="dropdown-item-profile">
                     <i className="fas fa-user me-2"></i>
                     My Profile
-                  </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/my-donations" className="dropdown-item-profile">
-                    <i className="fas fa-donate me-2"></i>
-                    My Donations
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item onClick={handleLogout} className="dropdown-item-logout">
