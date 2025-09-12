@@ -12,7 +12,7 @@ const apiRequest = async (endpoint, options = {}) => {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`User doesn't exist!: ${response.status} Please Sign Up!`);
     }
 
     return await response.json();
