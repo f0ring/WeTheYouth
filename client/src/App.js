@@ -1,4 +1,3 @@
-
 import Navbarr from './components/navbar';
 import HomePage from './page/HomePage';
 import Contact from './page/contact';
@@ -8,25 +7,45 @@ import TakeAction from './page/TakeAction';
 import Donate from './page/Donate';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+
 function App() {
   return (
     <AuthProvider>
-    <BrowserRouter>
-      <div className="App">
-        <Navbarr />
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/causes' element={<Causes />} />
-          <Route path='/take-action' element={<TakeAction />} />
-          <Route path='/donate' element={<Donate />} />
-          <Route path='/contact' element={<Contact />}>
-            <Route path='about/:id' element={<About />} />
-          </Route>
-        </Routes>
-      </div>
-    </BrowserRouter>
-     </AuthProvider>
+      <BrowserRouter>
+        <div className="App">
+          <Navbarr />
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/about' element={<About />} />
+            
+            {/* Protected Routes */}
+            <Route path='/causes' element={
+              <ProtectedRoute>
+                <Causes />
+              </ProtectedRoute>
+            } />
+            <Route path='/take-action' element={
+              <ProtectedRoute>
+                <TakeAction />
+              </ProtectedRoute>
+            } />
+            <Route path='/donate' element={
+              <ProtectedRoute>
+                <Donate />
+              </ProtectedRoute>
+            } />
+            <Route path='/contact' element={
+              <ProtectedRoute>
+                <Contact />
+              </ProtectedRoute>
+            }>
+              <Route path='about/:id' element={<About />} />
+            </Route>
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
