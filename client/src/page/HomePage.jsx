@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/HomePage.css';
 import Footer from '../components/Footer';
 import { homeApi } from '../services/api';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from '../components/AuthModal';
 
 const HomePage = () => {
   const [loaded, setLoaded] = useState(false);
@@ -14,56 +16,56 @@ const HomePage = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authAction, setAuthAction] = useState(null);
+  
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Set loaded to true after component mounts for animation
     setLoaded(true);
-    
-    // Fetch statistics from backend
-    const fetchStats = async () => {
-      try {
-        const stats = await homeApi.getStatistics();
-        
-        setCounters({
-          volunteers: stats.volunteers || 0,
-          cities: stats.cities || 0,
-          actions: stats.actions || 0
-        });
-
-        animateCounters(stats);
-      } catch (err) {
-        console.error('Failed to fetch stats:', err);
-        setError('Failed to load statistics');
-        // Use default values if API fails
-        animateCounters({ volunteers: 500, cities: 7, actions: 3000 });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchStats();
   }, []);
 
-  const animateCounters = (targetValues) => {
-    const duration = 2000;
-    const startTime = Date.now();
-
-    const animate = () => {
-      const now = Date.now();
-      const progress = Math.min(1, (now - startTime) / duration);
-      
+  const fetchStats = async () => {
+    try {
+      const stats = await homeApi.getStatistics();
       setCounters({
-        volunteers: Math.floor(progress * targetValues.volunteers),
-        cities: Math.floor(progress * targetValues.cities),
-        actions: Math.floor(progress * targetValues.actions)
+        volunteers: stats.volunteers || 0,
+        cities: stats.cities || 0,
+        actions: stats.actions || 0
       });
+      animateCounters(stats);
+    } catch (err) {
+      console.error('Failed to fetch stats:', err);
+      setError('Failed to load statistics');
+      animateCounters({ volunteers: 500, cities: 7, actions: 3000 });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
+  const animateCounters = (targetValues) => {
+    // ... your existing animation code
+  };
 
-    animate();
+  const handleAuthAction = (action) => {
+    if (currentUser) {
+      // User is authenticated, navigate to the page
+      navigate(`/${action}`);
+    } else {
+      // User is not authenticated, show auth modal
+      setAuthAction(action);
+      setShowAuthModal(true);
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    if (authAction) {
+      navigate(`/${authAction}`);
+    }
+    setShowAuthModal(false);
+    setAuthAction(null);
   };
 
   return (
@@ -143,8 +145,7 @@ const HomePage = () => {
             <Col lg={8} className="text-center">
               <h2 className="section-title mb-4">Ready to Make a Difference?</h2>
               <Button 
-                as={Link} 
-                to="/donate" 
+                onClick={() => handleAuthAction('donate')}
                 variant="danger" 
                 size="lg" 
                 className="cta-button mb-4 shake-on-hover"
@@ -153,16 +154,14 @@ const HomePage = () => {
               </Button>
               <div className="d-flex justify-content-center gap-3">
                 <Button 
-                  as={Link} 
-                  to="/causes" 
+                  onClick={() => handleAuthAction('causes')}
                   variant="outline-secondary" 
                   className="hover-grow"
                 >
                   Explore Causes
                 </Button>
                 <Button 
-                  as={Link} 
-                  to="/contact" 
+                  onClick={() => handleAuthAction('contact')}
                   variant="outline-secondary" 
                   className="hover-grow"
                 >
@@ -178,6 +177,16 @@ const HomePage = () => {
           </Row>
         </Container>
       </section>
+
+      <AuthModal 
+        show={showAuthModal} 
+        onHide={() => {
+          setShowAuthModal(false);
+          setAuthAction(null);
+        }}
+        onSuccess={handleAuthSuccess}
+        defaultTab="register"
+      />
 
       <Footer />
     </div>
