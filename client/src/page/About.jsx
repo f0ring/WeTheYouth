@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
 import '../css/About.css';
 import { aboutApi } from '../services/api';
-
+import { useNavigate } from "react-router-dom";
 const About = () => {
+
+  const navigate = useNavigate();
   const [stories, setStories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -87,14 +89,7 @@ const About = () => {
       {/* Footer Link */}
       <section className="about-footer py-4 text-center">
         <Container>
-          <a 
-            href="https://www.wetheyouth.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="website-link"
-          >
-            www.wetheyouth.com
-          </a>
+          <a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); }}>www.wetheyouth.com</a>
         </Container>
       </section>
     </div>

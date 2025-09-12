@@ -169,7 +169,7 @@ const HomePage = () => {
                 </Button>
               </div>
               <div className="website-link mt-4">
-                <a href="https://www.wetheyouth.com" target="_blank" rel="noopener noreferrer">
+                <a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); }} className="website-link">
                   www.wetheyouth.com
                 </a>
               </div>
