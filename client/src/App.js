@@ -8,7 +8,7 @@ import Donate from './page/Donate';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
-
+import Profile from './page/Profile';
 function App() {
   return (
     <AuthProvider>
@@ -25,6 +25,11 @@ function App() {
                 <Causes />
               </ProtectedRoute>
             } />
+            <Route path='/profile' element={
+  <ProtectedRoute>
+   <Profile />
+  </ProtectedRoute>
+ } />
             <Route path='/take-action' element={
               <ProtectedRoute>
                 <TakeAction />
