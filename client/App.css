@@ -34,18 +34,18 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.modal-header {
+.auth-modal .modal-header {
   background: linear-gradient(135deg, #3498db, #2ecc71);
   color: white;
   border-bottom: none;
 }
 
-.modal-title {
+.auth-modal .modal-title {
   font-weight: 700;
   font-size: 1.5rem;
 }
 
-.auth-tabs .nav-link {
+.auth-modal .auth-tabs .nav-link {
   color: #2c3e50;
   font-weight: 600;
   padding: 15px;
@@ -53,35 +53,35 @@
   border-radius: 0;
 }
 
-.auth-tabs .nav-link.active {
+.auth-modal .auth-tabs .nav-link.active {
   background: linear-gradient(135deg, #e74c3c, #f39c12);
   color: white;
   border: none;
 }
 
-.form-group {
+.auth-modal .form-group {
   margin-bottom: 1.5rem;
 }
 
-.form-label {
+.auth-modal .form-label {
   font-weight: 600;
   color: #2c3e50;
   margin-bottom: 0.5rem;
 }
 
-.form-control {
+.auth-modal .form-control {
   padding: 12px 15px;
   border: 2px solid #e9ecef;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
 
-.form-control:focus {
+.auth-modal .form-control:focus {
   border-color: #3498db;
   box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
 }
 
-.auth-button {
+.auth-modal .auth-button {
   background: linear-gradient(135deg, #e74c3c, #f39c12);
   border: none;
   padding: 12px;
@@ -90,28 +90,28 @@
   transition: all 0.3s ease;
 }
 
-.auth-button:hover {
+.auth-modal .auth-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
 }
 
-.auth-button:disabled {
+.auth-modal .auth-button:disabled {
   opacity: 0.7;
   transform: none;
 }
 
-.auth-alert {
+.auth-modal .auth-alert {
   border-radius: 8px;
   border: none;
   background-color: #ffe6e6;
   color: #d63031;
 }
 
-.auth-link {
+.auth-modal .auth-link {
   color: #6c757d;
 }
 
-.btn-link {
+.auth-modal .btn-link {
   background: none;
   border: none;
   color: #3498db;
@@ -120,9 +120,83 @@
   padding: 0;
 }
 
-.btn-link:hover {
+.auth-modal .btn-link:hover {
   color: #2980b9;
 }
+
+/* User Avatar in Navbar */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e74c3c, #f39c12);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.dropdown-item {
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #e74c3c;
+}
+
+/* Responsive adjustments for auth modal */
+@media (max-width: 576px) {
+  .auth-modal .modal-dialog {
+    margin: 10px;
+  }
+  
+  .auth-modal .auth-tabs .nav-link {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+/* Profile Page Styles */
+.user-avatar-profile {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3498db, #2ecc71);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.shadow-sm {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 15px;
+  border: none;
+}
+
+/* Add to your App.js routes */
+// import Profile from './page/Profile';
+
+// Add this route:
+// <Route path='/profile' element={
+//   <ProtectedRoute>
+//     <Profile />
+//   </ProtectedRoute>
+// } />
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
