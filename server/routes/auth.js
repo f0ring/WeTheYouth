@@ -1,7 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import auth from '../middleware/auth.js';
+import auth from '../middleware/auth.js'; // This import should now work
 
 const router = express.Router();
 
@@ -91,5 +91,5 @@ router.get('/me', auth, async (req, res) => {
   });
 });
 
-// Use ES6 export syntax
+// Use default export
 export default router;
