@@ -27,7 +27,102 @@
 .App-link {
   color: #61dafb;
 }
+/* Auth Modal Styles */
+.auth-modal .modal-content {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
 
+.modal-header {
+  background: linear-gradient(135deg, #3498db, #2ecc71);
+  color: white;
+  border-bottom: none;
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.auth-tabs .nav-link {
+  color: #2c3e50;
+  font-weight: 600;
+  padding: 15px;
+  border: none;
+  border-radius: 0;
+}
+
+.auth-tabs .nav-link.active {
+  background: linear-gradient(135deg, #e74c3c, #f39c12);
+  color: white;
+  border: none;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  padding: 12px 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.auth-button {
+  background: linear-gradient(135deg, #e74c3c, #f39c12);
+  border: none;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.auth-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+.auth-button:disabled {
+  opacity: 0.7;
+  transform: none;
+}
+
+.auth-alert {
+  border-radius: 8px;
+  border: none;
+  background-color: #ffe6e6;
+  color: #d63031;
+}
+
+.auth-link {
+  color: #6c757d;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #3498db;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-link:hover {
+  color: #2980b9;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
