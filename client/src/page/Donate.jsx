@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import "../css/Donation.css";
-import { makeGift } from "../components/donation";
-import { Modal, Button, Form } from "react-bootstrap";
 
 const Donate = () => {
   const [showForm, setShowForm] = useState(false);
@@ -20,11 +18,35 @@ const Donate = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Donation Form Submitted:", formData);
-    alert("Thank you for your donation!");
-    setShowForm(false);
+    try {
+      const res = await fetch("http://localhost:5000/api/donations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      // Only parse JSON if response has JSON content
+      let data;
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        data = await res.json();
+      }
+
+      if (res.ok) {
+        alert(data?.message || "Thank you for your donation!");
+        setShowForm(false);
+
+        // Clear form fields
+        setFormData({ name: "", amount: "", section: "", message: "", phone: "" });
+      } else {
+        alert(data?.error || "Error submitting donation.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error submitting donation. Check console.");
+    }
   };
 
   return (
@@ -43,11 +65,10 @@ const Donate = () => {
           alt="Donation Icon" 
         />
         <p><strong>Donate by Bkash</strong></p>
-        <button className="donate-btn" onClick={makeGift}>
+        <button className="donate-btn" onClick={() => alert("Redirect to payment")}>
           Make a Gift
         </button>
 
-        {/* New Button to open Donation Form */}
         <button 
           className="donate-btn" 
           style={{ background: "#e63946", marginLeft: "10px" }}
@@ -57,85 +78,67 @@ const Donate = () => {
         </button>
       </div>
 
-      {/* Donation Form Modal */}
-      <Modal show={showForm} onHide={() => setShowForm(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Donation Form</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Full Name</Form.Label>
-              <Form.Control 
-                type="text" 
-                placeholder="Enter your name" 
-                name="name" 
-                value={formData.name} 
-                onChange={handleChange} 
-                required 
-              />
-            </Form.Group>
+      {/* Donation Form */}
+      {showForm && (
+        <div className="form-container">
+          <h3>Donation Form</h3>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Full Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
 
-            <Form.Group className="mb-3">
-              <Form.Label>Donation Amount</Form.Label>
-              <Form.Control 
-                type="number" 
-                placeholder="Enter amount" 
-                name="amount" 
-                value={formData.amount} 
-                onChange={handleChange} 
-                required 
-              />
-            </Form.Group>
+            <input
+              type="number"
+              placeholder="Donation Amount"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              required
+            />
 
-            <Form.Group className="mb-3">
-              <Form.Label>Section / Cause</Form.Label>
-              <Form.Select 
-                name="section" 
-                value={formData.section} 
-                onChange={handleChange} 
-                required
-              >
-                <option value="">Select a section</option>
-                <option value="Education">Education</option>
-                <option value="Health">Health</option>
-                <option value="Environment">Environment</option>
-                <option value="General Fund">General Fund</option>
-              </Form.Select>
-            </Form.Group>
+            {/* Section / Cause dropdown */}
+            <select
+              name="section"
+              value={formData.section}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select a section</option>
+              <option value="Education">Education</option>
+              <option value="Health">Health</option>
+              <option value="Environment">Environment</option>
+              <option value="General Fund">General Fund</option>
+            </select>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Message / Note</Form.Label>
-              <Form.Control 
-                as="textarea" 
-                rows={3} 
-                placeholder="Leave a note..." 
-                name="message" 
-                value={formData.message} 
-                onChange={handleChange} 
-              />
-            </Form.Group>
+            <input
+              type="text"
+              placeholder="Message / Note"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+            />
 
-            <Form.Group className="mb-3">
-              <Form.Label>Phone Number</Form.Label>
-              <Form.Control 
-                type="tel" 
-                placeholder="Enter phone number" 
-                name="phone" 
-                value={formData.phone} 
-                onChange={handleChange} 
-                required 
-              />
-            </Form.Group>
+            <input
+              type="text"
+              placeholder="Phone Number"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
 
-            <Button type="submit" className="w-100 donate-btn">
+            <button type="submit" className="submit-btn">
               Submit Donation
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
+            </button>
+          </form>
+        </div>
+      )}
 
-      {/* Quote */}
       <div className="quote">
         “Be the light in someone’s darkest moment. Donate today & make an impact.”
       </div>

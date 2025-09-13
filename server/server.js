@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import homeRoutes from './routes/homeRoutes.js';
 import aboutRoutes from './routes/aboutRoutes.js';
+import takeActionRoutes from './routes/takeActionRoutes.js';
+import donationRoutes from './routes/donationRoutes.js';
 import authRoutes from './routes/auth.js';
 // Load environment variables
 dotenv.config();
@@ -34,6 +36,8 @@ app.use(express.json());
 // Routes
 app.use('/api/home', homeRoutes);
 app.use('/api/about', aboutRoutes);
+app.use('/api/take-action', takeActionRoutes);
+app.use('/api/donations', donationRoutes);
 app.use('/api/auth', authRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to the server 🚀");
