@@ -43,6 +43,35 @@ export const homeApi = {
 };
 
 // About Page APIs
+<<<<<<< HEAD
+=======
+// Add to your aboutApi object
+// Add to your existing api.js
+
+// Add this to your existing api.js
+export const donationApi = {
+  submitDonation: async (donationData) => {
+    const token = getAuthToken();
+    return apiRequest('/donations', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(donationData),
+    });
+  },
+};
+
+export const volunteerApi = {
+  submitVolunteer: async (volunteerData) => {
+    return apiRequest('/volunteers', {
+      method: 'POST',
+      body: JSON.stringify(volunteerData),
+    });
+  }
+};
+>>>>>>> parent of a783eba (Minor changes)
 export const aboutApi = {
   getStories: async () => {
     return apiRequest('/about/stories');
@@ -79,6 +108,13 @@ export const generalApi = {
       body: JSON.stringify(volunteerData),
     });
   },
+<<<<<<< HEAD
 };
 
 export default apiRequest;
+=======
+  
+};
+
+export default apiRequest;
+>>>>>>> parent of a783eba (Minor changes)
