@@ -1,3 +1,5 @@
+import { getAuthToken } from "../services/auth";
+
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 // Helper function for API calls
@@ -42,6 +44,31 @@ export const homeApi = {
 
 // About Page APIs
 // Add to your aboutApi object
+// Add to your existing api.js
+
+// Add this to your existing api.js
+export const donationApi = {
+  submitDonation: async (donationData) => {
+    const token = getAuthToken();
+    return apiRequest('/donations', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(donationData),
+    });
+  },
+};
+
+export const volunteerApi = {
+  submitVolunteer: async (volunteerData) => {
+    return apiRequest('/volunteers', {
+      method: 'POST',
+      body: JSON.stringify(volunteerData),
+    });
+  }
+};
 export const aboutApi = {
   getStories: async () => {
     return apiRequest('/about/stories');
@@ -78,6 +105,7 @@ export const generalApi = {
       body: JSON.stringify(volunteerData),
     });
   },
+  
 };
 
 export default apiRequest;
