@@ -26,29 +26,29 @@ const apiRequest = async (endpoint, options = {}) => {
 
 // HomePage APIs
 export const homeApi = {
-  getStatistics: async () => {
-    return apiRequest('/home/stats');
-  },
-
-  getFeaturedContent: async () => {
-    return apiRequest('/home/featured');
-  },
-
-  submitNewsletter: async (email) => {
-    return apiRequest('/newsletter', {
+  getStatistics: async () => apiRequest('/home/stats'),
+  getFeaturedContent: async () => apiRequest('/home/featured'),
+  submitNewsletter: async (email) =>
+    apiRequest('/newsletter', {
       method: 'POST',
       body: JSON.stringify({ email }),
-    });
-  },
+    }),
 };
 
 // About Page APIs
-<<<<<<< HEAD
-=======
-// Add to your aboutApi object
-// Add to your existing api.js
+export const aboutApi = {
+  getStories: async () => apiRequest('/about/stories'),
+  getStory: async (id) => apiRequest(`/about/stories/${id}`),
+  createStory: async (storyData) =>
+    apiRequest('/about/stories', {
+      method: 'POST',
+      body: JSON.stringify(storyData),
+    }),
+  getStoriesByCategory: async (category) =>
+    apiRequest(`/about/stories/category/${category}`),
+};
 
-// Add this to your existing api.js
+// Donation APIs
 export const donationApi = {
   submitDonation: async (donationData) => {
     const token = getAuthToken();
@@ -56,65 +56,34 @@ export const donationApi = {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(donationData),
     });
   },
 };
 
+// Volunteer APIs
 export const volunteerApi = {
-  submitVolunteer: async (volunteerData) => {
-    return apiRequest('/volunteers', {
+  submitVolunteer: async (volunteerData) =>
+    apiRequest('/volunteers', {
       method: 'POST',
       body: JSON.stringify(volunteerData),
-    });
-  }
-};
->>>>>>> parent of a783eba (Minor changes)
-export const aboutApi = {
-  getStories: async () => {
-    return apiRequest('/about/stories');
-  },
-
-  getStory: async (id) => {
-    return apiRequest(`/about/stories/${id}`);
-  },
-
-  createStory: async (storyData) => {
-    return apiRequest('/about/stories', {
-      method: 'POST',
-      body: JSON.stringify(storyData),
-    });
-  },
-
-  getStoriesByCategory: async (category) => {
-    return apiRequest(`/about/stories/category/${category}`);
-  }
+    }),
 };
 
 // General APIs
 export const generalApi = {
-  submitContactForm: async (formData) => {
-    return apiRequest('/contact', {
+  submitContactForm: async (formData) =>
+    apiRequest('/contact', {
       method: 'POST',
       body: JSON.stringify(formData),
-    });
-  },
-
-  submitVolunteer: async (volunteerData) => {
-    return apiRequest('/volunteers', {
+    }),
+  submitVolunteer: async (volunteerData) =>
+    apiRequest('/volunteers', {
       method: 'POST',
       body: JSON.stringify(volunteerData),
-    });
-  },
-<<<<<<< HEAD
+    }),
 };
 
 export default apiRequest;
-=======
-  
-};
-
-export default apiRequest;
->>>>>>> parent of a783eba (Minor changes)
