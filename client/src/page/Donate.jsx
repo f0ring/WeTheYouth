@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import "../css/Donation.css";
 import { makeGift } from "../components/donation";
-import { Modal, Button, Form, Alert } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from '../context/AuthContext';
-import { donationApi } from '../services/api';
-import AuthModal from '../components/AuthModal';
 
 const Donate = () => {
   const [showForm, setShowForm] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     amount: "",
@@ -20,66 +14,19 @@ const Donate = () => {
     phone: "",
   });
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-    setError(""); // Clear error when user types
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
-    
-    if (!currentUser) {
-      setShowAuthModal(true);
-      setLoading(false);
-      return;
-    }
-
-    try {
-      // Validate form data
-      if (!formData.amount || formData.amount <= 0) {
-        throw new Error("Please enter a valid donation amount");
-      }
-
-      const donationData = {
-        amount: parseFloat(formData.amount),
-        section: formData.section,
-        message: formData.message,
-        phone: formData.phone,
-        name: formData.name
-      };
-
-      const response = await donationApi.submitDonation(donationData);
-      
-      alert("Thank you for your donation! We'll process it shortly.");
-      setShowForm(false);
-      setFormData({
-        name: "",
-        amount: "",
-        section: "",
-        message: "",
-        phone: "",
-      });
-    } catch (error) {
-      console.error('Donation error:', error);
-      setError(error.message || "There was an error submitting your donation. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleOpenForm = () => {
-    if (!currentUser) {
-      setShowAuthModal(true);
-    } else {
-      setShowForm(true);
-    }
+    console.log("Donation Form Submitted:", formData);
+    alert("Thank you for your donation!");
+    setShowForm(false);
   };
 
   return (
@@ -99,30 +46,30 @@ const Donate = () => {
         />
         <p><strong>Donate by Bkash</strong></p>
         <button className="donate-btn" onClick={makeGift}>
-          Make a Gift
+          Make a Gift via Bkash
         </button>
 
+        {/* Direct Donation Button - AUTHENTICATION NEEDED HERE */}
         <button 
           className="donate-btn" 
           style={{ background: "#e63946", marginLeft: "10px" }}
-          onClick={handleOpenForm}
-          disabled={loading}
+          onClick={() => setShowForm(true)}
         >
-          {loading ? "Processing..." : "Open Donation Form"}
+          Make a Direct Donation
         </button>
+
+        {/* TODO: Add authentication check for direct donations */}
       </div>
 
       {/* Donation Form Modal */}
-      <Modal show={showForm} onHide={() => !loading && setShowForm(false)} centered>
+      <Modal show={showForm} onHide={() => setShowForm(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Donation Form</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {error && <Alert variant="danger">{error}</Alert>}
-          
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Full Name *</Form.Label>
+              <Form.Label>Full Name</Form.Label>
               <Form.Control 
                 type="text" 
                 placeholder="Enter your name" 
@@ -130,12 +77,11 @@ const Donate = () => {
                 value={formData.name} 
                 onChange={handleChange} 
                 required 
-                disabled={loading}
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Donation Amount (BDT) *</Form.Label>
+              <Form.Label>Donation Amount</Form.Label>
               <Form.Control 
                 type="number" 
                 placeholder="Enter amount" 
@@ -143,19 +89,16 @@ const Donate = () => {
                 value={formData.amount} 
                 onChange={handleChange} 
                 required 
-                min="1"
-                disabled={loading}
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Section / Cause *</Form.Label>
+              <Form.Label>Section / Cause</Form.Label>
               <Form.Select 
                 name="section" 
                 value={formData.section} 
                 onChange={handleChange} 
                 required
-                disabled={loading}
               >
                 <option value="">Select a section</option>
                 <option value="Education">Education</option>
@@ -174,12 +117,11 @@ const Donate = () => {
                 name="message" 
                 value={formData.message} 
                 onChange={handleChange} 
-                disabled={loading}
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Phone Number *</Form.Label>
+              <Form.Label>Phone Number</Form.Label>
               <Form.Control 
                 type="tel" 
                 placeholder="Enter phone number" 
@@ -187,16 +129,11 @@ const Donate = () => {
                 value={formData.phone} 
                 onChange={handleChange} 
                 required 
-                disabled={loading}
               />
             </Form.Group>
 
-            <Button 
-              type="submit" 
-              className="w-100 donate-btn"
-              disabled={loading}
-            >
-              {loading ? "Submitting..." : "Submit Donation"}
+            <Button type="submit" className="w-100 donate-btn">
+              Submit Donation
             </Button>
           </Form>
         </Modal.Body>
@@ -218,11 +155,6 @@ const Donate = () => {
         <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384023.png" width="30" alt="whatsapp" /></a>
         <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384005.png" width="30" alt="facebook" /></a>
       </footer>
-
-      <AuthModal 
-        show={showAuthModal} 
-        onHide={() => setShowAuthModal(false)}
-      />
     </div>
   );
 };

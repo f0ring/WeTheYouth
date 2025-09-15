@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Navbar, Nav, Button, Dropdown, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -15,9 +15,8 @@ const Navbarr = () => {
   const navigate = useNavigate();
 
   // Pulsing animation effect
-  useEffect(() => {
+  React.useEffect(() => {
     const interval = setInterval(() => {
-      // Pulse animation sequence
       setPulseAnimation('0 0 0 0 rgba(231, 76, 60, 0.4)');
       setTimeout(() => setPulseAnimation('0 0 0 8px rgba(231, 76, 60, 0.2)'), 350);
       setTimeout(() => setPulseAnimation('0 0 0 12px rgba(231, 76, 60, 0)'), 700);
@@ -30,20 +29,10 @@ const Navbarr = () => {
   const handleLogout = () => {
     logout();
     setShowLogoutAlert(true);
-    // Redirect to homepage after logout
     navigate('/');
-    // Hide alert after 3 seconds
     setTimeout(() => setShowLogoutAlert(false), 3000);
   };
 
-  // Get user initials
-  const getUserInitials = () => {
-    if (!currentUser) return '';
-    const { firstName, lastName } = currentUser;
-    return `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase();
-  };
-
-  // Inline styles to force the appearance
   const avatarStyle = {
     width: '40px',
     height: '40px',
@@ -68,7 +57,6 @@ const Navbarr = () => {
           <span className={styles.logoText}>WE THE YOUTH</span>
         </Navbar.Brand>
         
-        {/* Logout Success Alert */}
         {showLogoutAlert && (
           <Alert variant="success" className="position-fixed top-0 start-50 translate-middle-x mt-5 z-3 logout-alert">
             <i className="fas fa-check-circle me-2"></i>
@@ -83,6 +71,8 @@ const Navbarr = () => {
             <Nav.Link as={Link} to="/about" className={styles.navLink}>About</Nav.Link>
             <Nav.Link as={Link} to="/causes" className={styles.navLink}>Causes</Nav.Link>
             <Nav.Link as={Link} to="/take-action" className={styles.navLink}>Take Action</Nav.Link>
+            {/* ADD DONATION LINK TO NAVBAR */}
+            <Nav.Link as={Link} to="/donate" className={styles.navLink}>Donate</Nav.Link>
             <Nav.Link as={Link} to="/contact" className={styles.navLink}>Contact</Nav.Link>
             
             {currentUser ? (
@@ -98,16 +88,16 @@ const Navbarr = () => {
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                   >
-                    {getUserInitials()}
+                    {currentUser.firstName.charAt(0)}{currentUser.lastName.charAt(0)}
                   </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="profile-dropdown">
                   <Dropdown.Header className="text-center profile-header">
                     <div className="user-avatar-large mb-2">
-                      {getUserInitials()}
+                      {currentUser.firstName.charAt(0)}{currentUser.lastName.charAt(0)}
                     </div>
-                    <h6 className="mb-0 profile-name">{currentUser.firstName} {currentUser.lastName}</h6>
-                    <small className="text-muted profile-email">{currentUser.email}</small>
+                    <h6 className="mb-0">{currentUser.firstName} {currentUser.lastName}</h6>
+                    <small className="text-muted">{currentUser.email}</small>
                   </Dropdown.Header>
                   <Dropdown.Divider />
                   <Dropdown.Item as={Link} to="/profile" className="dropdown-item-profile">
