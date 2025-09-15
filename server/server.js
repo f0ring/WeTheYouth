@@ -5,8 +5,11 @@ import dotenv from 'dotenv';
 import homeRoutes from './routes/homeRoutes.js';
 import aboutRoutes from './routes/aboutRoutes.js';
 import authRoutes from './routes/auth.js';
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> parent of bad0ca8 (Minor change)
 // Load environment variables
 dotenv.config();
 
@@ -37,7 +40,10 @@ app.use(express.json());
 app.use('/api/home', homeRoutes);
 app.use('/api/about', aboutRoutes);
 app.use('/api/auth', authRoutes);
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of bad0ca8 (Minor change)
 app.get("/", (req, res) => {
   res.send("Welcome to the server 🚀");
 });
