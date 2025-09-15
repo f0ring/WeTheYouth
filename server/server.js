@@ -34,7 +34,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Test routes (placed before main middleware)
+// Test route
 app.get("/", (req, res) => {
   res.send("Welcome to the server 🚀");
 });
