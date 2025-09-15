@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import homeRoutes from './routes/homeRoutes.js';
 import aboutRoutes from './routes/aboutRoutes.js';
 import authRoutes from './routes/auth.js';
+import donationRoutes from './routes/donation.js';
+import volunteerRoutes from './routes/volunteer.js';
 
 // Load environment variables
 dotenv.config();
@@ -32,11 +34,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/home', homeRoutes);
-app.use('/api/about', aboutRoutes);
-app.use('/api/auth', authRoutes);
-
+// Test route
 app.get("/", (req, res) => {
   res.send("Welcome to the server 🚀");
 });
@@ -55,8 +53,8 @@ app.get('/api/db-status', async (req, res) => {
       database: 'MongoDB',
       status: statusMessages[dbStatus] || 'Unknown',
       readyState: dbStatus,
-      databaseName: mongoose.connection.name,
-      host: mongoose.connection.host
+      databaseName: mongoose.connection.name || 'Not connected',
+      host: mongoose.connection.host || 'Not connected'
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -67,14 +65,12 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'Backend connected successfully!' });
 });
 
-app.get('/api/home/stats', (req, res) => {
-  res.json({
-    volunteers: 500,
-    cities: 7,
-    actions: 3000,
-    source: 'database-connected'
-  });
-});
+// Main Routes Middleware
+app.use('/api/home', homeRoutes);
+app.use('/api/about', aboutRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/donations', donationRoutes);
+app.use('/api/volunteers', volunteerRoutes);
 
 const PORT = process.env.PORT || 5000;
 
@@ -89,5 +85,5 @@ connectDb()
     console.log('✅ MongoDB connection attempted');
   })
   .catch(error => {
-    console.log('⚠️  Server running without MongoDB');
+    console.log('⚠  Server running without MongoDB');
   });
