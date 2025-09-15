@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Navbar, Nav, Button, Dropdown, Alert } from 'react-bootstrap';
+import { 
+  Navbar, 
+  Nav, 
+  Button, 
+  Dropdown, 
+  Alert,
+  Badge
+} from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import AuthModal from './AuthModal';
@@ -11,7 +18,7 @@ const Navbarr = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [pulseAnimation, setPulseAnimation] = useState('0 0 0 0 rgba(231, 76, 60, 0.4)');
   
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout } = useAuth(); // currentUser is defined here
   const navigate = useNavigate();
 
   // Pulsing animation effect
@@ -32,6 +39,12 @@ const Navbarr = () => {
     navigate('/');
     setTimeout(() => setShowLogoutAlert(false), 3000);
   };
+
+  // REMOVE the temporary debug code that was causing the error
+  // The problematic lines were:
+  // {currentUser && ( ... )} 
+  // and 
+  // <pre>{JSON.stringify(currentUser, null, 2)}</pre>
 
   const avatarStyle = {
     width: '40px',
@@ -71,9 +84,15 @@ const Navbarr = () => {
             <Nav.Link as={Link} to="/about" className={styles.navLink}>About</Nav.Link>
             <Nav.Link as={Link} to="/causes" className={styles.navLink}>Causes</Nav.Link>
             <Nav.Link as={Link} to="/take-action" className={styles.navLink}>Take Action</Nav.Link>
-            {/* ADD DONATION LINK TO NAVBAR */}
             <Nav.Link as={Link} to="/donate" className={styles.navLink}>Donate</Nav.Link>
             <Nav.Link as={Link} to="/contact" className={styles.navLink}>Contact</Nav.Link>
+            
+            {/* ADMIN LINK - Only shown to admin users */}
+            {currentUser && currentUser.role === 'admin' && (
+              <Nav.Link as={Link} to="/admin" className={styles.navLink}>
+                <i className="fas fa-cog me-1"></i> Admin
+              </Nav.Link>
+            )}
             
             {currentUser ? (
               <Dropdown align="end" className="ms-2">
@@ -98,6 +117,9 @@ const Navbarr = () => {
                     </div>
                     <h6 className="mb-0">{currentUser.firstName} {currentUser.lastName}</h6>
                     <small className="text-muted">{currentUser.email}</small>
+                    {currentUser.role === 'admin' && (
+                      <Badge bg="warning" className="mt-1">Admin</Badge>
+                    )}
                   </Dropdown.Header>
                   <Dropdown.Divider />
                   <Dropdown.Item as={Link} to="/profile" className="dropdown-item-profile">

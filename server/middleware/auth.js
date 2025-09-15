@@ -22,6 +22,17 @@ const auth = async (req, res, next) => {
     res.status(401).json({ message: 'Token is not valid.' });
   }
 };
+// Add admin check if needed
+// You can add this function to check admin role
+const adminAuth = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ message: 'Access denied. Admin only.' });
+  }
+  next();
+};
+
+// Export if needed
+export { adminAuth };
 
 // Use default export
 export default auth;

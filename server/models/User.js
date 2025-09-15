@@ -24,6 +24,18 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
+   isVolunteer: {
+    type: Boolean,
+    default: false
+  },
+  volunteerSince: {
+    type: Date
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
+  },
   createdAt: {
     type: Date,
     default: Date.now

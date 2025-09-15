@@ -7,6 +7,7 @@ import aboutRoutes from './routes/aboutRoutes.js';
 import authRoutes from './routes/auth.js';
 import donationRoutes from './routes/donation.js';
 import volunteerRoutes from './routes/volunteer.js';
+import adminRoutes from './routes/admin.js';
 
 // Load environment variables
 dotenv.config();
@@ -33,6 +34,7 @@ const connectDb = async () => {
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/api/admin', adminRoutes);
 
 // Test route
 app.get("/", (req, res) => {

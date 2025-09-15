@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const volunteerSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   fullName: {
     type: String,
     required: true,
@@ -30,6 +35,18 @@ const volunteerSchema = new mongoose.Schema({
   occupation: {
     type: String,
     required: true
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending'
+  },
+  approvedAt: {
+    type: Date
+  },
+  approvedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   createdAt: {
     type: Date,
