@@ -9,10 +9,7 @@ import Donate from './page/Donate';
 import Contact from './page/contact';
 import Causes from './page/Causes';
 import TakeAction from './page/TakeAction';
-import Donate from './page/Donate';
 import Profile from './page/Profile';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminPanel from './page/AdminPanel';
 import SessionTimer from './components/SessionTimer'; // Session Timer import

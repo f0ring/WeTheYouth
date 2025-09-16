@@ -374,8 +374,8 @@ export const contactApi = {
   }
 };
 
-// General APIs
-export const generalApi = {
+// Admin APIs
+export const adminApi = {
   submitContactForm: async (formData) => {
     return apiRequest('/contact', {
       method: 'POST',
