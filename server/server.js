@@ -68,6 +68,15 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'Backend connected successfully!' });
 });
 
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'Server is running', 
+    timestamp: new Date().toISOString(),
+    message: 'WeTheYouth API is operational'
+  });
+});
+
+
 // Main Routes Middleware
 app.use('/api/home', homeRoutes);
 app.use('/api/about', aboutRoutes);

@@ -92,7 +92,7 @@ router.get('/me', auth, async (req, res) => {
       firstName: req.user.firstName,
       lastName: req.user.lastName,
       email: req.user.email,
-      role: user.role
+      role: req.user.role
       
     }
   });

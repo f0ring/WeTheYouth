@@ -9,9 +9,14 @@ import Donate from './page/Donate';
 import Contact from './page/contact';
 import Causes from './page/Causes';
 import TakeAction from './page/TakeAction';
+import Donate from './page/Donate';
 import Profile from './page/Profile';
-// import AdminPanel from './page/AdminPanel'; // Comment out for now
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminPanel from './page/AdminPanel';
+import SessionTimer from './components/SessionTimer'; // Session Timer import
+
 
 function App() {
   return (
@@ -26,10 +31,10 @@ function App() {
             <Route path='/causes' element={<Causes />} />
             <Route path='/take-action' element={<TakeAction />} />
             <Route path='/donate' element={<Donate />} />
-            <Route path='/contact' element={<Contact />} />
-            
-            {/* Nested about route */}
-            <Route path='/contact/about/:id' element={<About />} />
+            <Route path='/contact' element={<Contact />}>
+              <Route path='about/:id' element={<About />} />
+              
+            </Route>
             
             {/* Protected Profile route */}
             <Route path='/profile' element={
@@ -37,17 +42,12 @@ function App() {
                 <Profile />
               </ProtectedRoute>
             } />
-            
-            {/* Protected Admin route - Comment out for now */}
-            {/*
             <Route path='/admin' element={
-              <ProtectedRoute>
-                <AdminPanel />
-              </ProtectedRoute>
-            } />
-            */}
+  <ProtectedRoute>
+    <AdminPanel />
+  </ProtectedRoute>
+} />
           </Routes>
-          <Footer />
         </div>
       </Router>
     </AuthProvider>
