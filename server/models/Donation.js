@@ -4,7 +4,7 @@ const donationSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: false // Not required for Bkash donations
   },
   amount: {
     type: Number,
@@ -21,6 +21,23 @@ const donationSchema = new mongoose.Schema({
   phone: {
     type: String,
     required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  paymentMethod: {
+    type: String,
+    enum: ['bkash', 'direct'],
+    default: 'direct'
+  },
+  transactionId: {
+    type: String,
+    default: ''
+  },
+  senderPhone: {
+    type: String,
+    default: ''
   },
   status: {
     type: String,
