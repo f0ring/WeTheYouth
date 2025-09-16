@@ -6,6 +6,7 @@ import homeRoutes from './routes/homeRoutes.js';
 import aboutRoutes from './routes/aboutRoutes.js';
 import authRoutes from './routes/auth.js';
 import donationRoutes from './routes/donation.js';
+import contactRoutes from './routes/contactRoutes.js';
 import volunteerRoutes from './routes/volunteer.js';
 import adminRoutes from './routes/admin.js';
 
@@ -82,6 +83,7 @@ app.use('/api/about', aboutRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/volunteers', volunteerRoutes);
+app.use('/api/contact', contactRoutes);
 
 const PORT = process.env.PORT || 5000;
 

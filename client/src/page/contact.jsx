@@ -1,7 +1,71 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { Modal, Alert } from "react-bootstrap";
+import { useAuth } from '../context/AuthContext';
+import AuthModal from '../components/AuthModal';
+import { contactApi } from '../services/api';
 
 const Contact = () => {
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  
+  const { currentUser } = useAuth();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+    setError("");
+    setSuccess("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
+    
+    if (!currentUser) {
+      setShowAuthModal(true);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      if (!formData.name || !formData.email || !formData.message) {
+        throw new Error("Please fill in all required fields");
+      }
+
+      const contactData = {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+      };
+
+      await contactApi.submitContact(contactData);
+      
+      setSuccess("Thank you for your message! We'll get back to you shortly.");
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error('Contact form error:', error);
+      setError(error.message || "There was an error submitting your message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Heading */}
@@ -35,35 +99,61 @@ const Contact = () => {
       {/* Contact Form */}
       <div className="bg-white rounded-2xl shadow-lg p-6">
         <h2 className="text-2xl font-semibold mb-4">Send Us a Message</h2>
-        <form className="space-y-4">
+        
+        {!currentUser && (
+          <Alert variant="info" className="mb-4">
+            Please sign in to send us a message.
+          </Alert>
+        )}
+        
+        {error && <Alert variant="danger">{error}</Alert>}
+        {success && <Alert variant="success">{success}</Alert>}
+        
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label className="block font-medium">Name</label>
+            <label className="block font-medium">Name *</label>
             <input
               type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
               className="w-full border rounded-xl p-2 focus:outline-none focus:ring focus:ring-blue-300"
               placeholder="Your name"
+              disabled={!currentUser || loading}
+              required
             />
           </div>
           <div>
-            <label className="block font-medium">Email</label>
+            <label className="block font-medium">Email *</label>
             <input
               type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               className="w-full border rounded-xl p-2 focus:outline-none focus:ring focus:ring-blue-300"
               placeholder="you@example.com"
+              disabled={!currentUser || loading}
+              required
             />
           </div>
           <div>
-            <label className="block font-medium">Message</label>
+            <label className="block font-medium">Message *</label>
             <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
               className="w-full border rounded-xl p-2 h-28 resize-none focus:outline-none focus:ring focus:ring-blue-300"
               placeholder="Write your message here..."
+              disabled={!currentUser || loading}
+              required
             ></textarea>
           </div>
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition disabled:opacity-50"
+            disabled={!currentUser || loading}
           >
-            Send Message
+            {loading ? "Sending..." : "Send Message"}
           </button>
         </form>
       </div>
@@ -82,6 +172,11 @@ const Contact = () => {
 
       {/* Outlet for nested routes */}
       <Outlet />
+
+      <AuthModal 
+        show={showAuthModal} 
+        onHide={() => setShowAuthModal(false)}
+      />
     </div>
   );
 };
