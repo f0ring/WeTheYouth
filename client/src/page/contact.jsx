@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Modal, Alert } from "react-bootstrap";
 import { useAuth } from '../context/AuthContext';
 import AuthModal from '../components/AuthModal';
-import { contactApi } from '../services/api';
+import { generalApi } from '../services/api'; // Changed from contactApi to generalApi
 
 const Contact = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -50,7 +50,7 @@ const Contact = () => {
         message: formData.message,
       };
 
-      await contactApi.submitContact(contactData);
+      await generalApi.submitContactForm(contactData); // Changed this line
       
       setSuccess("Thank you for your message! We'll get back to you shortly.");
       setFormData({

@@ -14,37 +14,45 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AdminPanel from './page/AdminPanel';
 import SessionTimer from './components/SessionTimer'; // Session Timer import
 
-
 function App() {
   return (
     <AuthProvider>
       <Router>
         <div className="App">
           <Navbar />
-          <Routes>
-            {/* Public routes */}
-            <Route path='/' element={<Home />} />
-            <Route path='/about' element={<About />} />
-            <Route path='/causes' element={<Causes />} />
-            <Route path='/take-action' element={<TakeAction />} />
-            <Route path='/donate' element={<Donate />} />
-            <Route path='/contact' element={<Contact />}>
-              <Route path='about/:id' element={<About />} />
+          <main>
+            <Routes>
+              {/* Public routes */}
+              <Route path='/' element={<Home />} />
+              <Route path='/about' element={<About />} />
+              <Route path='/causes' element={<Causes />} />
+              <Route path='/take-action' element={<TakeAction />} />
+              <Route path='/donate' element={<Donate />} />
+              <Route path='/contact' element={<Contact />}>
+                <Route path='about/:id' element={<About />} />
+              </Route>
               
-            </Route>
-            
-            {/* Protected Profile route */}
-            <Route path='/profile' element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            } />
-            <Route path='/admin' element={
-  <ProtectedRoute>
-    <AdminPanel />
-  </ProtectedRoute>
-} />
-          </Routes>
+              {/* Protected Profile route */}
+              <Route path='/profile' element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } />
+              
+              {/* Protected Admin route */}
+              <Route path='/admin' element={
+                <ProtectedRoute>
+                  <AdminPanel />
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </main>
+          
+          {/* Footer */}
+          <Footer />
+          
+          {/* Session Timer - This should be outside Routes but inside Router */}
+          <SessionTimer />
         </div>
       </Router>
     </AuthProvider>
