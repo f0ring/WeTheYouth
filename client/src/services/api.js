@@ -314,6 +314,46 @@ export const authApi = {
   }
 };
 
+// Contact APIs
+export const contactApi = {
+  submitContact: async (contactData) => {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('Authentication required. Please login first.');
+    }
+
+    return apiRequest('/contact', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(contactData),
+    });
+  },
+
+  getMyMessages: async () => {
+    const token = getAuthToken();
+    if (!token) {
+      console.warn('No auth token available');
+      return [];
+    }
+
+    try {
+      const response = await apiRequest('/contact/my-messages', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+      });
+      return response || [];
+    } catch (error) {
+      console.error('Error fetching contact messages:', error);
+      // Return empty array instead of throwing to prevent UI breakage
+      return [];
+    }
+  }
+};
+
 // Admin APIs
 export const adminApi = {
   getAllDonations: async () => {
@@ -334,6 +374,15 @@ export const adminApi = {
     });
   },
 
+  getAllContacts: async () => {
+    const token = getAuthToken();
+    return apiRequest('/admin/contacts', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    });
+  },
+
   updateDonationStatus: async (id, statusData) => {
     const token = getAuthToken();
     return apiRequest(`/admin/donations/${id}/status`, {
@@ -346,10 +395,21 @@ export const adminApi = {
     });
   },
 
-  // ADD THIS MISSING FUNCTION
   updateVolunteerStatus: async (id, status) => {
     const token = getAuthToken();
     return apiRequest(`/admin/volunteers/${id}/status`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status }),
+    });
+  },
+
+  updateContactStatus: async (id, status) => {
+    const token = getAuthToken();
+    return apiRequest(`/admin/contacts/${id}/status`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,

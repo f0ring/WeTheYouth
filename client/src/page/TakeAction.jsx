@@ -165,21 +165,21 @@ const TakeAction = () => {
       <div className="content-row">
         <div className="mission">
           <h3>Together we rise</h3>
-          <p>✨ Be a voice of hope in time of crisis</p>
-          <p>💪 Use your strength to uplift those in need</p>
-          <p>❤️ Serve with passion, lead with compassion</p>
+          <p> Be a voice of hope in time of crisis</p>
+          <p> Use your strength to uplift those in need</p>
+          <p> Serve with passion, lead with compassion</p>
         </div>
 
         <div className="youth-activities">
           <h3><b>Youth Friendly Campaigns</b></h3>
           <ul>
-            <li>🌱 Tree planting campaigns</li>
-            <li>🧹 Street/Park cleaning drives</li>
-            <li>👵 Visiting elderly homes</li>
-            <li>🍱 Food distribution</li>
-            <li>📚 Clothes & book drives</li>
-            <li>🐶 Animal shelter help</li>
-            <li>🌍 Cultural exchange events</li>
+            <li> Tree planting campaigns</li>
+            <li> Street/Park cleaning drives</li>
+            <li> Visiting elderly homes</li>
+            <li> Food distribution</li>
+            <li> Clothes & book drives</li>
+            <li> Animal shelter help</li>
+            <li> Cultural exchange events</li>
           </ul>
         </div>
       </div>
