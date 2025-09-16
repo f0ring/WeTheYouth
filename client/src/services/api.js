@@ -1,79 +1,6 @@
-<<<<<<< HEAD
-=======
 // src/services/api.js
 
-// Remove this import as it causes circular dependency
-// import { getAuthToken } from "../services/auth";
-
->>>>>>> 44b57f813483e2e980c5166861199340798560b1
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-
-// Helper function to get token without circular dependency
-const getToken = () => {
-  return localStorage.getItem('token');
-};
-
-// Helper function for API calls
-const apiRequest = async (endpoint, options = {}) => {
-  try {
-    const token = getToken();
-    const headers = {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    };
-    
-    // Add authorization header if token exists
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      headers,
-      ...options,
-    });
-
-    if (!response.ok) {
-<<<<<<< HEAD
-      // Handle specific HTTP errors
-      if (response.status === 401) {
-        // Unauthorized - clear token and redirect to login
-        setAuthToken(null);
-        window.location.href = '/';
-        throw new Error('Authentication failed. Please login again.');
-      }
-      
-      if (response.status === 404) {
-        throw new Error('API endpoint not found. Please check the server.');
-      }
-      
-      if (response.status >= 500) {
-        throw new Error('Server error. Please try again later.');
-      }
-      
-      throw new Error(`HTTP error! status: ${response.status}`);
-=======
-      throw new Error(`Request failed with status: ${response.status}`);
->>>>>>> 44b57f813483e2e980c5166861199340798560b1
-    }
-
-    // Check if response has content
-    const contentType = response.headers.get('content-type');
-    if (contentType && contentType.includes('application/json')) {
-      return await response.json();
-    } else {
-      return await response.text();
-    }
-  } catch (error) {
-    console.error('API request failed:', error);
-    
-    // Provide more specific error messages
-    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-      throw new Error('Cannot connect to server. Please check if the backend is running.');
-    }
-    
-    throw error;
-  }
-};
 
 // Safe localStorage access with error handling
 const safeLocalStorage = {
@@ -123,15 +50,84 @@ export const getAuthToken = () => {
   return safeLocalStorage.getItem('token');
 };
 
-// Check if storage is available
-export const isStorageAvailable = () => {
+// Helper function to get token without circular dependency
+const getToken = () => {
+  return getAuthToken();
+};
+
+// Token validation function
+const validateToken = () => {
+  const token = getToken();
+  if (!token) {
+    throw new Error('No authentication token found. Please login again.');
+  }
+  
+  // Simple JWT expiration check (optional but recommended)
   try {
-    const test = 'test';
-    localStorage.setItem(test, test);
-    localStorage.removeItem(test);
-    return true;
+    // Extract payload from JWT token (if it's a JWT)
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    if (payload.exp && payload.exp * 1000 < Date.now()) {
+      // Token is expired
+      setAuthToken(null);
+      throw new Error('Authentication token expired. Please login again.');
+    }
+  } catch (e) {
+    // Token is not a JWT or is malformed - we'll still try to use it
+    console.warn('Token validation warning:', e.message);
+  }
+  
+  return token;
+};
+
+// Helper function for API calls
+const apiRequest = async (endpoint, options = {}) => {
+  try {
+    const token = getToken();
+    const headers = {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    };
+    
+    // Add authorization header if token exists
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      headers,
+      ...options,
+    });
+
+    if (!response.ok) {
+      // Handle specific HTTP errors
+      if (response.status === 401) {
+        // Unauthorized - clear token
+        setAuthToken(null);
+        // Don't redirect immediately - let the component handle it
+        throw new Error('Authentication failed. Please login again.');
+      }
+      
+      if (response.status === 404) {
+        throw new Error('API endpoint not found. Please check the server.');
+      }
+      
+      if (response.status >= 500) {
+        throw new Error('Server error. Please try again later.');
+      }
+      
+      throw new Error(`Request failed with status: ${response.status}`);
+    }
+
+    return await response.json();
   } catch (error) {
-    return false;
+    console.error('API request failed:', error);
+    
+    // Provide more specific error messages
+    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+      throw new Error('Cannot connect to server. Please check if the backend is running.');
+    }
+    
+    throw error;
   }
 };
 
@@ -175,27 +171,37 @@ export const aboutApi = {
   }
 };
 
-// Donation APIs
+
+// In services/api.js - FIXED submitDonation
+// Donation APIs - CORRECTED VERSION
 export const donationApi = {
   submitDonation: async (donationData) => {
-<<<<<<< HEAD
-    const token = getAuthToken();
-    if (!token) {
-      throw new Error('Authentication required. Please login first.');
-    }
+    try {
+      const token = getAuthToken();
+      if (!token) {
+        throw new Error('Authentication required. Please login first.');
+      }
 
-    return apiRequest('/donations', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-=======
-    return apiRequest('/donations', {
-      method: 'POST',
->>>>>>> 44b57f813483e2e980c5166861199340798560b1
-      body: JSON.stringify(donationData),
-    });
+      console.log('Sending donation data:', donationData);
+      
+      const response = await fetch(`${API_BASE_URL}/donations`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(donationData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Donation submission error:', error);
+      throw error;
+    }
   },
 
   getMyDonations: async () => {
@@ -214,8 +220,26 @@ export const donationApi = {
       return response || [];
     } catch (error) {
       console.error('Error fetching donations:', error);
-      // Return empty array instead of throwing to prevent UI breakage
       return [];
+    }
+  },
+
+  getCommunityStats: async () => {
+    try {
+      return await apiRequest('/donations/community/stats');
+    } catch (error) {
+      console.error('Error fetching community stats:', error);
+      return {
+        totalRaised: 0,
+        totalDonors: 0,
+        recentDonations: [],
+        sectionBreakdown: [],
+        monthlyGoal: {
+          current: 0,
+          target: 100000,
+          progress: 0
+        }
+      };
     }
   },
 
@@ -263,31 +287,8 @@ export const volunteerApi = {
       return response || [];
     } catch (error) {
       console.error('Error fetching volunteer applications:', error);
-      // Return empty array instead of throwing to prevent UI breakage
       return [];
     }
-  },
-
-  // Admin functions
-  getAllVolunteers: async () => {
-    const token = getAuthToken();
-    return apiRequest('/volunteers', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-    });
-  },
-
-  updateVolunteerStatus: async (id, status) => {
-    const token = getAuthToken();
-    return apiRequest(`/volunteers/${id}/status`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ status }),
-    });
   }
 };
 
@@ -333,7 +334,6 @@ export const authApi = {
       });
       return response.user;
     } catch (error) {
-      // If token is invalid, remove it
       setAuthToken(null);
       return null;
     }
@@ -347,17 +347,8 @@ export const authApi = {
 // Contact APIs
 export const contactApi = {
   submitContact: async (contactData) => {
-    const token = getAuthToken();
-    if (!token) {
-      throw new Error('Authentication required. Please login first.');
-    }
-
     return apiRequest('/contact', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(contactData),
     });
   },
@@ -378,88 +369,8 @@ export const contactApi = {
       return response || [];
     } catch (error) {
       console.error('Error fetching contact messages:', error);
-      // Return empty array instead of throwing to prevent UI breakage
       return [];
     }
-  }
-};
-
-// Admin APIs
-export const adminApi = {
-  getAllDonations: async () => {
-    const token = getAuthToken();
-    return apiRequest('/admin/donations', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-    });
-  },
-
-  getAllVolunteers: async () => {
-    const token = getAuthToken();
-    return apiRequest('/admin/volunteers', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-    });
-  },
-
-  getAllContacts: async () => {
-    const token = getAuthToken();
-    return apiRequest('/admin/contacts', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-    });
-  },
-
-  updateDonationStatus: async (id, statusData) => {
-    const token = getAuthToken();
-    return apiRequest(`/admin/donations/${id}/status`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(statusData),
-    });
-  },
-
-  updateVolunteerStatus: async (id, status) => {
-    const token = getAuthToken();
-    return apiRequest(`/admin/volunteers/${id}/status`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ status }),
-    });
-  },
-
-  updateContactStatus: async (id, status) => {
-    const token = getAuthToken();
-    return apiRequest(`/admin/contacts/${id}/status`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ status }),
-    });
-  },
-
-  // Temporary admin creation endpoint (for development)
-  createAdmin: async (email) => {
-    const token = getAuthToken();
-    return apiRequest('/auth/create-admin', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email }),
-    });
   }
 };
 
@@ -469,9 +380,8 @@ export const generalApi = {
     return apiRequest('/contact', {
       method: 'POST',
       body: JSON.stringify(formData),
-<<<<<<< HEAD
     });
-  },
+  }
 };
 
 // Health check API
@@ -484,35 +394,4 @@ export const healthCheck = async () => {
   }
 };
 
-// Debug function to test API connectivity
-export const testApiConnection = async () => {
-  console.log('Testing API connection to:', API_BASE_URL);
-  
-  try {
-    const response = await fetch(`${API_BASE_URL}/health`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    
-    console.log('API connection test result:', {
-      status: response.status,
-      statusText: response.statusText,
-      ok: response.ok,
-      url: response.url
-    });
-    
-    return response.ok;
-  } catch (error) {
-    console.error('API connection test failed:', error);
-    return false;
-  }
-};
-
-=======
-    }),
-};
-
->>>>>>> 44b57f813483e2e980c5166861199340798560b1
 export default apiRequest;
