@@ -1,3 +1,4 @@
+// src/services/auth.js
 import apiRequest from './api';
 
 // Store token in localStorage
@@ -58,12 +59,7 @@ export const getCurrentUser = async () => {
       return null;
     }
     
-    const response = await apiRequest('/auth/me', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
+    const response = await apiRequest('/auth/me');
     return response.user;
   } catch (error) {
     // If token is invalid, remove it

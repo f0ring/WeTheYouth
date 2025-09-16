@@ -1,20 +1,36 @@
-import { getAuthToken } from "../services/auth";
+// src/services/api.js
+
+// Remove this import as it causes circular dependency
+// import { getAuthToken } from "../services/auth";
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
+// Helper function to get token without circular dependency
+const getToken = () => {
+  return localStorage.getItem('token');
+};
 
 // Helper function for API calls
 const apiRequest = async (endpoint, options = {}) => {
   try {
+    const token = getToken();
+    const headers = {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    };
+    
+    // Add authorization header if token exists
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+      headers,
       ...options,
     });
 
     if (!response.ok) {
-      throw new Error(`User doesn't exist!: ${response.status} Please Sign Up!`);
+      throw new Error(`Request failed with status: ${response.status}`);
     }
 
     return await response.json();
@@ -51,13 +67,8 @@ export const aboutApi = {
 // Donation APIs
 export const donationApi = {
   submitDonation: async (donationData) => {
-    const token = getAuthToken();
     return apiRequest('/donations', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(donationData),
     });
   },
@@ -78,11 +89,6 @@ export const generalApi = {
     apiRequest('/contact', {
       method: 'POST',
       body: JSON.stringify(formData),
-    }),
-  submitVolunteer: async (volunteerData) =>
-    apiRequest('/volunteers', {
-      method: 'POST',
-      body: JSON.stringify(volunteerData),
     }),
 };
 
