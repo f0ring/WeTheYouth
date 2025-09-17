@@ -188,7 +188,7 @@ const HomePage = () => {
         defaultTab="register"
       />
 
-      <Footer />
+      
     </div>
   );
 };
