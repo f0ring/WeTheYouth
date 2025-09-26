@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Table, Button, Badge, Form, Modal, Alert, Spinner } from 'react-bootstrap';
 import { adminApi, donationApi, volunteerApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import CarbonReport from '../components/CarbonReport';
 
-const AdminPanel = () => {
+  const AdminPanel = () => {
   const [donations, setDonations] = useState([]);
   const [volunteers, setVolunteers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,6 +14,17 @@ const AdminPanel = () => {
   const [actionType, setActionType] = useState('');
   const [status, setStatus] = useState('');
   const { currentUser } = useAuth();
+
+
+<Card className="mt-4">
+  <Card.Header>
+    <h5 className="mb-0">Environmental Impact</h5>
+  </Card.Header>
+  <Card.Body>
+    <CarbonReport />
+  </Card.Body>
+</Card>
+
 
   useEffect(() => {
     if (currentUser?.role === 'admin') {

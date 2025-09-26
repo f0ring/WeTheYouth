@@ -13,6 +13,8 @@ import Profile from './page/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminPanel from './page/AdminPanel';
 import SessionTimer from './components/SessionTimer'; // Session Timer import
+import CarbonMonitor from './components/CarbonMonitor';
+
 
 function App() {
   return (
@@ -53,6 +55,7 @@ function App() {
           
           {/* Session Timer - This should be outside Routes but inside Router */}
           <SessionTimer />
+          <CarbonMonitor />
         </div>
       </Router>
     </AuthProvider>

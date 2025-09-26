@@ -2,6 +2,7 @@ import express from 'express';
 import Donation from '../models/Donation.js';
 import Volunteer from '../models/Volunteer.js';
 import auth from '../middleware/auth.js';
+import { getCarbonReport } from '../middleware/carbonTracker.js';
 
 const router = express.Router();
 
@@ -105,6 +106,14 @@ router.put('/volunteers/:id/status', auth, adminAuth, async (req, res) => {
   } catch (error) {
     console.error('Update volunteer error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+router.get('/carbon-report', auth, adminAuth, async (req, res) => {
+  try {
+    const report = getCarbonReport(req.app);
+    res.json(report);
+  } catch (error) {
+    res.status(500).json({ message: 'Error generating carbon report', error: error.message });
   }
 });
 

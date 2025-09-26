@@ -9,7 +9,7 @@ import donationRoutes from './routes/donation.js';
 import contactRoutes from './routes/contactRoutes.js';
 import volunteerRoutes from './routes/volunteer.js';
 import adminRoutes from './routes/admin.js';
-
+import carbonTracker from './middleware/carbonTracker.js';
 // Load environment variables
 dotenv.config();
 
@@ -36,6 +36,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/admin', adminRoutes);
+app.use(carbonTracker);
+
 
 // Test route
 app.get("/", (req, res) => {
